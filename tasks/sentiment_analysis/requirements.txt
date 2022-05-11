@@ -1,0 +1,8 @@
+sklearn
+nltk
+transformers
+tokenizers
+spacy
+gensim
+pandas
+matplotlib
