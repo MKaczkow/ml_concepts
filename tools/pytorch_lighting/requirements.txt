@@ -1,0 +1,6 @@
+pytorch-lightning
+torch
+torchvision
+jupyter
+ipykernel
+numpy

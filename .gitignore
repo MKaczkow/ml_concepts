@@ -3,8 +3,15 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Datasets
+**/data
+**/MNIST
+
 # C extensions
 *.so
+
+# pytorch-lightning stuff
+**/lightning_logs
 
 # Distribution / packaging
 .Python
