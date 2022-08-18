@@ -2,5 +2,9 @@ pytorch-lightning
 torch
 torchvision
 jupyter
+sklearn
+matplotlib
+pandas
+xgboost
 ipykernel
-numpy
+statsmodels
