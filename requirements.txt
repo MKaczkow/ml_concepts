@@ -8,3 +8,4 @@ pandas
 xgboost
 ipykernel
 statsmodels
+pyspark
