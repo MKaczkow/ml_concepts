@@ -9,3 +9,4 @@ xgboost
 ipykernel
 statsmodels
 pyspark
+altair
