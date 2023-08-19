@@ -6,6 +6,7 @@ __pycache__/
 # Datasets
 **/data
 **/MNIST
+**/tools/data_visualisation/*.csv
 
 # C extensions
 *.so

@@ -10,3 +10,5 @@ ipykernel
 statsmodels
 pyspark
 altair
+nltk
+wordcloud
