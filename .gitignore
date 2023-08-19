@@ -8,6 +8,12 @@ __pycache__/
 **/MNIST
 **/tools/data_visualisation/*.csv
 
+# gradio 
+./tools/gradio_demos/flagged/*.csv
+./tools/gradio_demos/flagged/**
+./**/tools/gradio_demos/flagged/*.csv
+
+
 # C extensions
 *.so
 
