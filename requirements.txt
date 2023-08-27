@@ -10,5 +10,7 @@ ipykernel
 statsmodels
 pyspark
 altair
+vega_datasets
+seaborn
 nltk
 wordcloud
