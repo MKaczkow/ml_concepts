@@ -9,8 +9,10 @@ xgboost
 ipykernel
 statsmodels
 pyspark
+wordcloud
+nltk
 altair
 vega_datasets
 seaborn
-nltk
-wordcloud
+geopandas
+shapely
