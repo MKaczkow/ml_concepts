@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 from torchtext.datasets import Multi30k
-from torchtext.data import Field, BucketIterator
+from torchtext.legacy.data import Field, BucketIterator
 
 from torch.utils.tensorboard import SummaryWritter
 
@@ -13,6 +13,7 @@ import numpy as np
 import spacy
 import random
 
+from utils import translate_sentence, bleu, save_checkpoint, load_checkpoint
 from model import Encoder, Decoder, Seq2Seq
 
 
@@ -77,9 +78,38 @@ decoder_net = Decoder(input_size_decoder, decoder_embedding_size, hidden_size,
                       output_size, num_layers, decoder_dropout).to(device)
 
 model = Seq2Seq(encoder_net, decoder_net).to(device)
-
+optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+ 
 pad_idx = english.vocab.stoi['<pad>']
 loss_criterion = nn.CrossEntropyLoss(ignore_index=pad_idx)
 
-# if load_model:
-#     load_checkpoint(torch.load())
+if load_model:
+    load_checkpoint(torch.load('my_checkpoint.pth.ptar'), model, optimizer)
+
+for epoch in range(num_epochs):
+    print(f'Epoch [{epoch} / {num_epochs}]')
+
+    checkpoint = {'state_dict:': model.state_dict(), 'optimizer': optimizer.state_dict()}
+
+    for batch_idx, batch in enumerate(train_iterator):
+        inp_data = batch.src.to(device)
+        target = batch.trg.to(device)
+
+        output = model(inp_data, target)
+        # output shape: (trg_len, batch_size, output_dim)
+
+        # (N, 10) and targets would be (N)
+
+        output = output[1:].reshape(-1, output.shape[2])
+        target = target[1:].reshape(-1)
+
+        optimizer.zero_grad()
+        loss = criterion(output, target)
+
+        loss.backward()
+
+        torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1)
+        optimizer.step()
+
+        writter.add_scalar('Training loss', loss, global_step=step)
+        step += 1
