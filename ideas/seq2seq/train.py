@@ -3,6 +3,8 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.utils.data import DataLoader
+from torch.nn.utils.rnn import pad_sequence
 
 from torchtext.datasets import Multi30k
 from torchtext.legacy.data import Field, BucketIterator
@@ -26,6 +28,19 @@ def tokernizer_ger(text):
 def tokernizer_eng(text):
     return [tok.text for tok in spacy_eng.tokenizer(text)]
 
+
+# Create an iterator to feed taining loop
+# def collate_batch(batch):
+#    label_list, text_list = [], []
+#    for (_label, _text) in batch:
+#         label_list.append(label_transform(_label))
+#         processed_text = torch.tensor(text_transform(_text))
+#         text_list.append(processed_text)
+#    return torch.tensor(label_list), pad_sequence(text_list, padding_value=3.0)
+
+# train_iter = IMDB(split='train')
+# train_dataloader = DataLoader(list(train_iter), batch_size=8, shuffle=True, 
+#                               collate_fn=collate_batch)
 
 german = Field(tokenize=tokernizer_ger, lower=True,
                init_token='<sos>', eos_token='<eos>')
