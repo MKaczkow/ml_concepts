@@ -16,3 +16,4 @@ vega_datasets
 seaborn
 geopandas
 shapely
+apache-airflow
