@@ -1,2 +1,2 @@
-# ml_concepts
-repo for learning tools and ideas of ML/AI
+# ML Concepts
+Repo for learning tools and ideas of ML/AI
