@@ -1,8 +1,9 @@
+# for torch and torchvision use this (as of 2024-04-18 and Win)
+# pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu118
+
 pytorch-lightning
-torch
-torchvision
 jupyter
-sklearn
+scikit-learn
 matplotlib
 pandas
 xgboost
@@ -17,3 +18,4 @@ seaborn
 geopandas
 shapely
 apache-airflow
+lightly
