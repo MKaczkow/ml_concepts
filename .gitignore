@@ -8,6 +8,9 @@ __pycache__/
 **/MNIST
 **/tools/data_visualisation/*.csv
 
+# models
+**/*.pth
+
 # gradio 
 ./tools/gradio_demos/flagged/*.csv
 ./tools/gradio_demos/flagged/**

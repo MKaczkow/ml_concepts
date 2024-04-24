@@ -19,11 +19,13 @@ from utils import translate_sentence, bleu, save_checkpoint, load_checkpoint
 from model import Encoder, Decoder, Seq2Seq
 
 
-spacy_ger = spacy.load('de')
-spacy_eng = spacy.load('en')
+spacy_ger = spacy.load("de")
+spacy_eng = spacy.load("en")
+
 
 def tokernizer_ger(text):
     return [tok.text for tok in spacy_ger.tokenizer(text)]
+
 
 def tokernizer_eng(text):
     return [tok.text for tok in spacy_eng.tokenizer(text)]
@@ -39,18 +41,21 @@ def tokernizer_eng(text):
 #    return torch.tensor(label_list), pad_sequence(text_list, padding_value=3.0)
 
 # train_iter = IMDB(split='train')
-# train_dataloader = DataLoader(list(train_iter), batch_size=8, shuffle=True, 
+# train_dataloader = DataLoader(list(train_iter), batch_size=8, shuffle=True,
 #                               collate_fn=collate_batch)
 
-german = Field(tokenize=tokernizer_ger, lower=True,
-               init_token='<sos>', eos_token='<eos>')
+german = Field(
+    tokenize=tokernizer_ger, lower=True, init_token="<sos>", eos_token="<eos>"
+)
 
-english = Field(tokenize=tokernizer_eng, lower=True,
-               init_token='<sos>', eos_token='<eos>')
+english = Field(
+    tokenize=tokernizer_eng, lower=True, init_token="<sos>", eos_token="<eos>"
+)
 
 
-train_data, val_data, test_data = Multi30k.splits(exts=('.de', '.en'),
-                                                         fields=(german, english))
+train_data, val_data, test_data = Multi30k.splits(
+    exts=(".de", ".en"), fields=(german, english)
+)
 
 german.build_vocab(train_data, max_size=10_000, min_freq=2)
 english.build_vocab(train_data, max_size=10_000, min_freq=2)
@@ -63,7 +68,7 @@ batch_size = 64
 
 # Model hyperparameters
 load_model = False
-device = 'gpu' if torch.cuda.is_available() else 'cpu'
+device = "gpu" if torch.cuda.is_available() else "cpu"
 input_size_encoder = len(german.vocab)
 input_size_decoder = len(english.vocab)
 output_size = len(english.vocab)
@@ -75,7 +80,7 @@ encoder_dropout = 0.5
 decoder_dropout = 0.5
 
 # Tensorboard
-writter = SummaryWritter(f'runs/loss_plot')
+writter = SummaryWritter(f"runs/loss_plot")
 step = 0
 
 train_iterator, val_iterator, test_iterator = BucketIterator.splits(
@@ -83,28 +88,38 @@ train_iterator, val_iterator, test_iterator = BucketIterator.splits(
     batch_size=batch_size,
     sort_within_batch=True,
     sort_key=lambda x: len(x.src),
-    device=device
+    device=device,
 )
 
-encoder_net = Encoder(input_size_encoder, encoder_embedding_size,
-                      hidden_size, num_layers, encoder_dropout).to(device)
+encoder_net = Encoder(
+    input_size_encoder, encoder_embedding_size, hidden_size, num_layers, encoder_dropout
+).to(device)
 
-decoder_net = Decoder(input_size_decoder, decoder_embedding_size, hidden_size, 
-                      output_size, num_layers, decoder_dropout).to(device)
+decoder_net = Decoder(
+    input_size_decoder,
+    decoder_embedding_size,
+    hidden_size,
+    output_size,
+    num_layers,
+    decoder_dropout,
+).to(device)
 
 model = Seq2Seq(encoder_net, decoder_net).to(device)
 optimizer = optim.Adam(model.parameters(), lr=learning_rate)
- 
-pad_idx = english.vocab.stoi['<pad>']
+
+pad_idx = english.vocab.stoi["<pad>"]
 loss_criterion = nn.CrossEntropyLoss(ignore_index=pad_idx)
 
 if load_model:
-    load_checkpoint(torch.load('my_checkpoint.pth.ptar'), model, optimizer)
+    load_checkpoint(torch.load("my_checkpoint.pth.ptar"), model, optimizer)
 
 for epoch in range(num_epochs):
-    print(f'Epoch [{epoch} / {num_epochs}]')
+    print(f"Epoch [{epoch} / {num_epochs}]")
 
-    checkpoint = {'state_dict:': model.state_dict(), 'optimizer': optimizer.state_dict()}
+    checkpoint = {
+        "state_dict:": model.state_dict(),
+        "optimizer": optimizer.state_dict(),
+    }
 
     for batch_idx, batch in enumerate(train_iterator):
         inp_data = batch.src.to(device)
@@ -126,5 +141,5 @@ for epoch in range(num_epochs):
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1)
         optimizer.step()
 
-        writter.add_scalar('Training loss', loss, global_step=step)
+        writter.add_scalar("Training loss", loss, global_step=step)
         step += 1
