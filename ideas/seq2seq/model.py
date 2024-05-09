@@ -1,10 +1,10 @@
 import random
+
 import spacy
 import torch
 import torch.nn as nn
+from torchtext.data import BucketIterator, Field
 from torchtext.datasets import Multi30k
-from torchtext.data import Field, BucketIterator
-
 
 device = "gpu" if torch.cuda.is_available() else "cpu"
 

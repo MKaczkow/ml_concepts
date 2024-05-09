@@ -1,7 +1,8 @@
-import torch
-import spacy
-from torchtext.data.metrics import bleu_score
 import sys
+
+import spacy
+import torch
+from torchtext.data.metrics import bleu_score
 
 
 def translate_sentence(model, sentence, german, english, device, max_length=50):
