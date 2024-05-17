@@ -10,6 +10,7 @@ __pycache__/
 
 # models
 **/*.pth
+**/*.pt
 
 # gradio 
 ./tools/gradio_demos/flagged/*.csv
