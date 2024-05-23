@@ -5,6 +5,7 @@ pytorch-lightning
 jupyter
 scikit-learn
 matplotlib
+metric-learn
 pandas
 xgboost
 ipykernel
