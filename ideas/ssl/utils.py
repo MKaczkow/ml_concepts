@@ -1,4 +1,6 @@
+import csv
 import os
+import shutil
 from typing import List, Tuple, Union
 
 import matplotlib.pyplot as plt
@@ -57,9 +59,26 @@ def get_distance_between_points_in_cluster(
     return distances
 
 
-def generate_embeddings(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
+def generate_embeddings(model, dataloader) -> torch.Tensor:
     """Generates representations for all images in the dataloader with
     the given model
+    """
+
+    embeddings = []
+    with torch.no_grad():
+        for img, _, in dataloader:
+            img = img.to(model.device)
+            emb = model.backbone(img).flatten(start_dim=1)
+            embeddings.append(emb)
+
+    embeddings = torch.cat(embeddings, 0)
+    embeddings = normalize(embeddings)
+    return embeddings
+
+
+def generate_embeddings_and_fnames_and_fnames(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
+    """Generates representations for all images in the dataloader with
+    the given model and 'matches' them with respective filenames
     """
 
     embeddings = []
@@ -106,9 +125,6 @@ def plot_knn_examples(
     
     return None
 
-import os
-import shutil
-import csv
 
 def separate_images_by_class(csv_file, source_folder, destination_folder):
     # Create the destination folder if it doesn't exist
@@ -136,8 +152,9 @@ def separate_images_by_class(csv_file, source_folder, destination_folder):
                 print(f"Image {source_path} not found.")
     return None
 
+
 def get_distances_between_centroids(
-    embeddings: np.ndarray = None, n_clusters: int = 10
+    embeddings: np.ndarray = None, n_clusters: int = 10, num_principal_components: int = 3
 ) -> np.ndarray:
     """Calculate the clusters and distances between their centroids.
 
@@ -148,8 +165,12 @@ def get_distances_between_centroids(
     Returns:
         np.ndarray: matrix of distances between centroids, with rank n_clusters x n_clusters
     """
+
+    pca = PCA(n_components=num_principal_components)
+    embeddings_reduced = pca.fit_transform(embeddings)
+
     kmeans = KMeans(n_clusters=n_clusters)
-    labels = kmeans.fit_predict(embeddings)
+    labels = kmeans.fit_predict(embeddings_reduced)
     centroids = kmeans.cluster_centers_
 
     print(f"Cluster centroids dimensions: {centroids.shape}")
@@ -238,6 +259,7 @@ def plot_clusters(
     plt.show()
     return None
 
+
 def plot_clusters_3d(
     embeddings: Union[np.ndarray, None] = None,
     original_labels: Union[np.ndarray, None] = None,
@@ -246,13 +268,18 @@ def plot_clusters_3d(
     alpha: float = 0.1,
     plot_centroids: bool = False,
     specific_labels: Union[list, None] = None,
+    num_principal_components: int = 3,
 ) -> None:
     """Plots multiple rows of random images with their cluster centroids"""
 
     print(f"Working on embeddings of shape {embeddings.shape}")
 
+    pca = PCA(n_components=num_principal_components)
+    embeddings_reduced = pca.fit_transform(embeddings)
+    # to_plot_centroids = pca.transform(centroids)
+
     kmeans = KMeans(n_clusters=n_clusters)
-    labels = kmeans.fit_predict(embeddings)
+    labels = kmeans.fit_predict(embeddings_reduced)
     centroids = kmeans.cluster_centers_
 
     # Filter points by specific_labels if provided
@@ -264,10 +291,6 @@ def plot_clusters_3d(
         print(
             f"Filtering to labels {specific_labels}: {embeddings.shape[0]} points left"
         )
-
-    # TODO: first cluster, then reduce to 2D
-    # print(f"Cluster centroids:\n {centroids}")
-    # print(f"Cluster sizes: {np.bincount(labels)}")
 
     # Sample proportion_of_points_to_plot of the data to plot for readability
     sampled_indices = np.random.choice(
@@ -283,9 +306,11 @@ def plot_clusters_3d(
     print(f"Plotting {len(sampled_embeddings)} points out of {len(embeddings)}")
     print(f"Some labels: {sampled_labels[:10]}")
 
-    pca = PCA(n_components=3)
-    to_plot_embeddings = pca.fit_transform(sampled_embeddings)
-    to_plot_centroids = pca.transform(centroids)
+    # pca = PCA(n_components=3)
+    # to_plot_embeddings = pca.fit_transform(sampled_embeddings)
+    # to_plot_centroids = pca.transform(centroids)
+    to_plot_embeddings = sampled_embeddings
+    to_plot_centroids = centroids
     
     ax = plt.figure().add_subplot(projection='3d')
 
@@ -319,7 +344,8 @@ def plot_clusters_3d(
     plt.show()
     return None
 
-def generate_embeddings_simclr(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
+
+def generate_embeddings_and_fnames_simclr(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
     """Generates representations for all images in the dataloader with
     the given model
     """
