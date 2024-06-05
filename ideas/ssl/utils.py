@@ -38,6 +38,8 @@ def plot_knn_clusters(
     for i in sampled_indices:
         print(f"Original label: {original_labels[i]}")
         print(f"Predicted label: {original_labels[indices[i]]}")
+    
+    return None
 
 
 def get_distance_between_points_in_cluster(
@@ -76,7 +78,7 @@ def generate_embeddings(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
 
 def plot_knn_examples(
     embeddings, filenames, path_to_data, n_neighbors=3, num_examples=6
-):
+) -> None:
     """Plots multiple rows of random images with their nearest neighbors"""
     # lets look at the nearest neighbors for some samples
     # we use the sklearn library
@@ -101,7 +103,38 @@ def plot_knn_examples(
             ax.set_title(f"d={distances[idx][plot_x_offset]:.3f}")
             # let's disable the axis
             plt.axis("off")
+    
+    return None
 
+import os
+import shutil
+import csv
+
+def separate_images_by_class(csv_file, source_folder, destination_folder):
+    # Create the destination folder if it doesn't exist
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+
+    with open(csv_file, mode='r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            image_name = row['image'] + '.jpg'
+            label = row['label']
+            source_path = os.path.join(source_folder, image_name)
+            
+            # Create the subfolder for the label if it doesn't exist
+            label_folder = os.path.join(destination_folder, label)
+            if not os.path.exists(label_folder):
+                os.makedirs(label_folder)
+                
+            destination_path = os.path.join(label_folder, image_name)
+            
+            # Copy the image to the respective label subfolder
+            if os.path.exists(source_path):
+                shutil.copy2(source_path, destination_path)
+            else:
+                print(f"Image {source_path} not found.")
+    return None
 
 def get_distances_between_centroids(
     embeddings: np.ndarray = None, n_clusters: int = 10
@@ -203,7 +236,88 @@ def plot_clusters(
         f"Cluster Plot {'for labels ' + str(specific_labels) if specific_labels is not None else ''}"
     )
     plt.show()
+    return None
 
+def plot_clusters_3d(
+    embeddings: Union[np.ndarray, None] = None,
+    original_labels: Union[np.ndarray, None] = None,
+    n_clusters: int = 10,
+    proportion_of_points_to_plot: float = 0.001,
+    alpha: float = 0.1,
+    plot_centroids: bool = False,
+    specific_labels: Union[list, None] = None,
+) -> None:
+    """Plots multiple rows of random images with their cluster centroids"""
+
+    print(f"Working on embeddings of shape {embeddings.shape}")
+
+    kmeans = KMeans(n_clusters=n_clusters)
+    labels = kmeans.fit_predict(embeddings)
+    centroids = kmeans.cluster_centers_
+
+    # Filter points by specific_labels if provided
+    if specific_labels is not None:
+        mask = np.isin(original_labels, specific_labels)
+        embeddings = embeddings[mask]
+        original_labels = original_labels[mask]
+        labels = labels[mask]
+        print(
+            f"Filtering to labels {specific_labels}: {embeddings.shape[0]} points left"
+        )
+
+    # TODO: first cluster, then reduce to 2D
+    # print(f"Cluster centroids:\n {centroids}")
+    # print(f"Cluster sizes: {np.bincount(labels)}")
+
+    # Sample proportion_of_points_to_plot of the data to plot for readability
+    sampled_indices = np.random.choice(
+        embeddings.shape[0],
+        int(len(embeddings) * proportion_of_points_to_plot),
+        replace=False,
+    )
+
+    sampled_embeddings = embeddings[sampled_indices]
+    sampled_labels = original_labels[sampled_indices]
+    sampled_cluster_labels = labels[sampled_indices]
+
+    print(f"Plotting {len(sampled_embeddings)} points out of {len(embeddings)}")
+    print(f"Some labels: {sampled_labels[:10]}")
+
+    pca = PCA(n_components=3)
+    to_plot_embeddings = pca.fit_transform(sampled_embeddings)
+    to_plot_centroids = pca.transform(centroids)
+    
+    ax = plt.figure().add_subplot(projection='3d')
+
+    ax.scatter(
+        to_plot_embeddings[:, 0],
+        to_plot_embeddings[:, 1],
+        to_plot_embeddings[:, 2],
+        c=sampled_labels,
+        alpha=alpha,
+        cmap="viridis",
+    )
+
+    # FIXME: plots suggest that the data is not clustered well
+    if plot_centroids and specific_labels is not None:
+        # Only plot centroids of clusters that have points with the specified labels
+        unique_cluster_labels = np.unique(sampled_cluster_labels)
+        for cluster_label in unique_cluster_labels:
+            ax.scatter(
+                to_plot_centroids[cluster_label, 0],
+                to_plot_centroids[cluster_label, 1],
+                c="red",
+                marker="x",
+            )
+
+    # ax.colorbar(label="Original Class Labels")
+    # ax.xlabel("Component 1")
+    # ax.ylabel("Component 2")
+    plt.title(
+        f"Cluster Plot {'for labels ' + str(specific_labels) if specific_labels is not None else ''}"
+    )
+    plt.show()
+    return None
 
 def generate_embeddings_simclr(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
     """Generates representations for all images in the dataloader with
@@ -254,3 +368,5 @@ def check_labels_correspondence(
             plt.imshow(get_image_as_np_array(fname))
             ax.set_title(f"Label {label}")
             plt.axis("off")
+
+    return None

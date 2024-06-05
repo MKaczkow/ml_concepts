@@ -9,6 +9,7 @@ metric-learn
 pandas
 xgboost
 ipykernel
+ipympl
 statsmodels
 pyspark
 wordcloud

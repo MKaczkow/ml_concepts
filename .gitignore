@@ -6,6 +6,7 @@ __pycache__/
 # Datasets
 **/data
 **/MNIST
+**/cifar10
 **/tools/data_visualisation/*.csv
 
 # models
