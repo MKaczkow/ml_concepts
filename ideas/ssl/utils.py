@@ -40,7 +40,7 @@ def plot_knn_clusters(
     for i in sampled_indices:
         print(f"Original label: {original_labels[i]}")
         print(f"Predicted label: {original_labels[indices[i]]}")
-    
+
     return None
 
 
@@ -66,7 +66,10 @@ def generate_embeddings(model, dataloader) -> torch.Tensor:
 
     embeddings = []
     with torch.no_grad():
-        for img, _, in dataloader:
+        for (
+            img,
+            _,
+        ) in dataloader:
             img = img.to(model.device)
             emb = model.backbone(img).flatten(start_dim=1)
             embeddings.append(emb)
@@ -76,7 +79,9 @@ def generate_embeddings(model, dataloader) -> torch.Tensor:
     return embeddings
 
 
-def generate_embeddings_and_fnames_and_fnames(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
+def generate_embeddings_and_fnames_and_fnames(
+    model, dataloader
+) -> Tuple[torch.Tensor, List[str]]:
     """Generates representations for all images in the dataloader with
     the given model and 'matches' them with respective filenames
     """
@@ -122,7 +127,7 @@ def plot_knn_examples(
             ax.set_title(f"d={distances[idx][plot_x_offset]:.3f}")
             # let's disable the axis
             plt.axis("off")
-    
+
     return None
 
 
@@ -131,20 +136,20 @@ def separate_images_by_class(csv_file, source_folder, destination_folder):
     if not os.path.exists(destination_folder):
         os.makedirs(destination_folder)
 
-    with open(csv_file, mode='r') as file:
+    with open(csv_file, mode="r") as file:
         reader = csv.DictReader(file)
         for row in reader:
-            image_name = row['image'] + '.jpg'
-            label = row['label']
+            image_name = row["image"] + ".jpg"
+            label = row["label"]
             source_path = os.path.join(source_folder, image_name)
-            
+
             # Create the subfolder for the label if it doesn't exist
             label_folder = os.path.join(destination_folder, label)
             if not os.path.exists(label_folder):
                 os.makedirs(label_folder)
-                
+
             destination_path = os.path.join(label_folder, image_name)
-            
+
             # Copy the image to the respective label subfolder
             if os.path.exists(source_path):
                 shutil.copy2(source_path, destination_path)
@@ -154,7 +159,9 @@ def separate_images_by_class(csv_file, source_folder, destination_folder):
 
 
 def get_distances_between_centroids(
-    embeddings: np.ndarray = None, n_clusters: int = 10, num_principal_components: int = 3
+    embeddings: np.ndarray = None,
+    n_clusters: int = 10,
+    num_principal_components: int = 3,
 ) -> np.ndarray:
     """Calculate the clusters and distances between their centroids.
 
@@ -208,10 +215,6 @@ def plot_clusters(
             f"Filtering to labels {specific_labels}: {embeddings.shape[0]} points left"
         )
 
-    # TODO: first cluster, then reduce to 2D
-    # print(f"Cluster centroids:\n {centroids}")
-    # print(f"Cluster sizes: {np.bincount(labels)}")
-
     # Sample proportion_of_points_to_plot of the data to plot for readability
     sampled_indices = np.random.choice(
         embeddings.shape[0],
@@ -238,7 +241,6 @@ def plot_clusters(
         cmap="viridis",
     )
 
-    # FIXME: plots suggest that the data is not clustered well
     if plot_centroids and specific_labels is not None:
         # Only plot centroids of clusters that have points with the specified labels
         unique_cluster_labels = np.unique(sampled_cluster_labels)
@@ -311,8 +313,8 @@ def plot_clusters_3d(
     # to_plot_centroids = pca.transform(centroids)
     to_plot_embeddings = sampled_embeddings
     to_plot_centroids = centroids
-    
-    ax = plt.figure().add_subplot(projection='3d')
+
+    ax = plt.figure().add_subplot(projection="3d")
 
     ax.scatter(
         to_plot_embeddings[:, 0],
@@ -323,7 +325,6 @@ def plot_clusters_3d(
         cmap="viridis",
     )
 
-    # FIXME: plots suggest that the data is not clustered well
     if plot_centroids and specific_labels is not None:
         # Only plot centroids of clusters that have points with the specified labels
         unique_cluster_labels = np.unique(sampled_cluster_labels)
@@ -345,7 +346,9 @@ def plot_clusters_3d(
     return None
 
 
-def generate_embeddings_and_fnames_simclr(model, dataloader) -> Tuple[torch.Tensor, List[str]]:
+def generate_embeddings_and_fnames_simclr(
+    model, dataloader
+) -> Tuple[torch.Tensor, List[str]]:
     """Generates representations for all images in the dataloader with
     the given model
     """
