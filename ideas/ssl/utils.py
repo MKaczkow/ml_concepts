@@ -71,10 +71,14 @@ def generate_embeddings(model, dataloader) -> torch.Tensor:
             _,
         ) in dataloader:
             img = img.to(model.device)
+            print("Single image shape: ", img.shape)
             emb = model.backbone(img).flatten(start_dim=1)
+            print("Single mbedding shape: ", emb.shape)
             embeddings.append(emb)
+            print("Embeddings length: ", len(embeddings))
 
     embeddings = torch.cat(embeddings, 0)
+    print("Embeddings shape: ", embeddings.shape)
     embeddings = normalize(embeddings)
     return embeddings
 
