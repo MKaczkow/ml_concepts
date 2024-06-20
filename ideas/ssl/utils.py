@@ -12,6 +12,64 @@ from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier, NearestNeighbors
 from torch.nn.functional import normalize
+from torchvision import datasets, transforms
+import torchvision
+
+
+def save_mnist_images(selected_classes, save_dir):
+    # Define transformation
+    transform = transforms.Compose([transforms.ToTensor()])
+
+    # Function to save images from a dataset
+    def save_images(dataset, split_dir):
+        # Create class directories if not exist
+        class_dirs = {
+            cls: os.path.join(split_dir, str(cls)) for cls in selected_classes
+        }
+        for class_dir in class_dirs.values():
+            os.makedirs(class_dir, exist_ok=True)
+
+        # Iterate over dataset and save images
+        unique_ids = {cls: 0 for cls in selected_classes}
+        for img, label in dataset:
+            if label in selected_classes:
+                img = transforms.ToPILImage()(img)  # Convert tensor to PIL image
+                file_name = f"{label}_{unique_ids[label]}.jpg"
+                img.save(os.path.join(class_dirs[label], file_name))
+                unique_ids[label] += 1
+
+    # Download and save train dataset
+    train_dataset = datasets.MNIST(
+        root=".", train=True, transform=transform, download=True
+    )
+    save_images(train_dataset, os.path.join(save_dir, "train"))
+
+    # Download and save test dataset
+    test_dataset = datasets.MNIST(
+        root=".", train=False, transform=transform, download=True
+    )
+    save_images(test_dataset, os.path.join(save_dir, "test"))
+
+
+def generate_embeddings_and_fnames_simclr(
+    model, dataloader
+) -> Tuple[torch.Tensor, List[str]]:
+    """Generates representations for all images in the dataloader with
+    the given model
+    """
+
+    embeddings = []
+    filenames = []
+    with torch.no_grad():
+        for img, _, fnames in dataloader:
+            img = img.to(model.device)
+            emb = model.backbone(img).flatten(start_dim=1)
+            embeddings.append(emb)
+            filenames.extend(fnames)
+
+    embeddings = torch.cat(embeddings, 0)
+    embeddings = normalize(embeddings.to("cpu"))
+    return embeddings, filenames
 
 
 def get_image_as_np_array(filename: str) -> np.ndarray:
@@ -348,27 +406,6 @@ def plot_clusters_3d(
     )
     plt.show()
     return None
-
-
-def generate_embeddings_and_fnames_simclr(
-    model, dataloader
-) -> Tuple[torch.Tensor, List[str]]:
-    """Generates representations for all images in the dataloader with
-    the given model
-    """
-
-    embeddings = []
-    filenames = []
-    with torch.no_grad():
-        for img, _, fnames in dataloader:
-            img = img.to(model.device)
-            emb = model.backbone(img).flatten(start_dim=1)
-            embeddings.append(emb)
-            filenames.extend(fnames)
-
-    embeddings = torch.cat(embeddings, 0)
-    embeddings = normalize(embeddings.to("cpu"))
-    return embeddings, filenames
 
 
 def check_labels_correspondence(
