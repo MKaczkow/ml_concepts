@@ -21,3 +21,4 @@ geopandas
 shapely
 apache-airflow
 lightly
+shap

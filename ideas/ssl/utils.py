@@ -51,6 +51,25 @@ def save_mnist_images(selected_classes, save_dir):
     save_images(test_dataset, os.path.join(save_dir, "test"))
 
 
+def generate_embeddings(model, dataloader):
+    """Generates representations for all images in the dataloader with
+    the given model
+    """
+
+    embeddings = []
+    filenames = []
+    with torch.no_grad():
+        for img, _, fnames in dataloader:
+            img = img.to(model.device)
+            emb = model.backbone(img).flatten(start_dim=1)
+            embeddings.append(emb)
+            filenames.extend(fnames)
+
+    embeddings = torch.cat(embeddings, 0)
+    embeddings = normalize(embeddings)
+    return embeddings, filenames
+
+
 def generate_embeddings_and_fnames_simclr(
     model, dataloader
 ) -> Tuple[torch.Tensor, List[str]]:
@@ -115,30 +134,6 @@ def get_distance_between_points_in_cluster(
         distances[str(label)] = distance
 
     return distances
-
-
-def generate_embeddings(model, dataloader) -> torch.Tensor:
-    """Generates representations for all images in the dataloader with
-    the given model
-    """
-
-    embeddings = []
-    with torch.no_grad():
-        for (
-            img,
-            _,
-        ) in dataloader:
-            img = img.to(model.device)
-            print("Single image shape: ", img.shape)
-            emb = model.backbone(img).flatten(start_dim=1)
-            print("Single mbedding shape: ", emb.shape)
-            embeddings.append(emb)
-            print("Embeddings length: ", len(embeddings))
-
-    embeddings = torch.cat(embeddings, 0)
-    print("Embeddings shape: ", embeddings.shape)
-    embeddings = normalize(embeddings)
-    return embeddings
 
 
 def generate_embeddings_and_fnames_and_fnames(
