@@ -6,6 +6,7 @@ from typing import List, Tuple, Union
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import torchvision
 from PIL import Image
 from scipy.spatial.distance import cdist
 from sklearn.cluster import KMeans
@@ -13,15 +14,18 @@ from sklearn.decomposition import PCA
 from sklearn.neighbors import KNeighborsClassifier, NearestNeighbors
 from torch.nn.functional import normalize
 from torchvision import datasets, transforms
-import torchvision
 
 
-def save_mnist_images(selected_classes, save_dir):
-    # Define transformation
+def prepare_mnist_images(selected_classes, save_dir):
     transform = transforms.Compose([transforms.ToTensor()])
 
-    # Function to save images from a dataset
     def save_images(dataset, split_dir):
+
+        # Remove split_dir if it exists
+        if os.path.exists(split_dir):
+            shutil.rmtree(split_dir)
+        os.makedirs(split_dir, exist_ok=True)
+
         # Create class directories if not exist
         class_dirs = {
             cls: os.path.join(split_dir, str(cls)) for cls in selected_classes
@@ -38,13 +42,11 @@ def save_mnist_images(selected_classes, save_dir):
                 img.save(os.path.join(class_dirs[label], file_name))
                 unique_ids[label] += 1
 
-    # Download and save train dataset
     train_dataset = datasets.MNIST(
         root=".", train=True, transform=transform, download=True
     )
     save_images(train_dataset, os.path.join(save_dir, "train"))
 
-    # Download and save test dataset
     test_dataset = datasets.MNIST(
         root=".", train=False, transform=transform, download=True
     )

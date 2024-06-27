@@ -1,6 +1,9 @@
 # Self-supervised learning
 
 * example library: [lightly](https://docs.lightly.ai/self-supervised-learning/index.html)
+* run interface:
+    - `cd ideas/ssl`
+    - `mlflow ui`
 
 # TODO:
 batch danych 256 z 3-4 klasami

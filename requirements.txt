@@ -22,3 +22,4 @@ shapely
 apache-airflow
 lightly
 shap
+mlflow

@@ -13,6 +13,13 @@ __pycache__/
 **/test-cifar10
 **/tools/data_visualisation/*.csv
 
+# mlflow
+**/mlruns
+
+# output data
+**/outputs/*.png
+**/outputs
+
 # models
 **/*.pth
 **/*.pt
