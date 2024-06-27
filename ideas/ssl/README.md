@@ -5,6 +5,14 @@
     - `cd ideas/ssl`
     - `mlflow ui`
 
+# TODO
+* założyć dokument google, który będzie pełnił funkcję "dziennika" z eksperymentów, takie podkreślenie key point'ów z eksperymentów
+* logować też loss i więcej metryk do mlflow
+* jakie są rozsądne wartości lossa dla tego zadania
+* sprawdzić mniejsze embeddingi
+    - jak się zachowuje loss w zależności od embedding size?
+* poprawić literówkę w nazwie notebooka (jak się skończy run)
+
 ## Papiery
 * Czy są jakieś augementacje do danych typu 'seria', np. zamiana kolejności kilku elementów w sekwencji i/lub różny szum do kolejnych elementów ?
     - https://arxiv.org/abs/2304.14601
