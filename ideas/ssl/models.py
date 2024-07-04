@@ -1,7 +1,7 @@
-import torchvision
+import pytorch_lightning as pl
 import torch
 import torch.nn as nn
-import pytorch_lightning as pl
+import torchvision
 from lightly.loss import NTXentLoss
 from lightly.models.modules.heads import SimCLRProjectionHead
 
@@ -11,14 +11,14 @@ class SimCLRModel(pl.LightningModule):
         super().__init__()
 
         self.max_epochs = max_epochs
+        self.training_step_outputs = []
 
         # create a ResNet backbone and remove the classification head
         resnet = torchvision.models.resnet18()
         self.backbone = nn.Sequential(*list(resnet.children())[:-1])
 
         hidden_dim = resnet.fc.in_features
-        self.projection_head = SimCLRProjectionHead(
-            hidden_dim, hidden_dim, 128)
+        self.projection_head = SimCLRProjectionHead(hidden_dim, hidden_dim, 128)
 
         self.criterion = NTXentLoss()
 
@@ -32,6 +32,7 @@ class SimCLRModel(pl.LightningModule):
         z0 = self.forward(x0)
         z1 = self.forward(x1)
         loss = self.criterion(z0, z1)
+        self.training_step_outputs.append(loss)
         self.log("train_loss_ssl", loss)
         return loss
 
@@ -39,6 +40,5 @@ class SimCLRModel(pl.LightningModule):
         optim = torch.optim.SGD(
             self.parameters(), lr=6e-2, momentum=0.9, weight_decay=5e-4
         )
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
-            optim, self.max_epochs)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, self.max_epochs)
         return [optim], [scheduler]

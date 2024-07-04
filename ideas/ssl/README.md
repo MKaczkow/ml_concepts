@@ -6,12 +6,19 @@
     - `mlflow ui`
 
 # TODO
-* założyć dokument google, który będzie pełnił funkcję "dziennika" z eksperymentów, takie podkreślenie key point'ów z eksperymentów
-* logować też loss i więcej metryk do mlflow
-* jakie są rozsądne wartości lossa dla tego zadania
-* sprawdzić mniejsze embeddingi
-    - jak się zachowuje loss w zależności od embedding size?
-* poprawić literówkę w nazwie notebooka (jak się skończy run)
+- [ ] sprawdzić mniejsze embeddingi
+    - [ ] re-run wszystkich eksperymentów z zapisem loss
+    - [ ] jak się zachowuje loss w zależności od embedding size?
+- [ ] update
+- [ ] logować też loss i więcej metryk do mlflow
+    - [x] loss
+    - co jeszcze? (based on: [geeksforgeeks](https://www.geeksforgeeks.org/clustering-performance-evaluation-in-scikit-learn/))
+        - [ ] ARI  (??)
+        - [ ] Davies-Bouldin index (??)
+        - [ ] Silhouette score (??)
+- [x] Jakie są rozsądne wartości lossa dla tego zadania? (wprost w papierze nie jest podane, ocena tylko na downstream tasks, trzeba porównać 'wewnątrz' eksperymentu, np. pomiędzy różnymi wymiarowościami latent space)
+- [x] założyć dokument google, który będzie pełnił funkcję "dziennika" z eksperymentów, takie podkreślenie key point'ów z eksperymentów
+- [x] poprawić literówkę w nazwie notebooka (jak się skończy run)
 
 ## Papiery
 * Czy są jakieś augementacje do danych typu 'seria', np. zamiana kolejności kilku elementów w sekwencji i/lub różny szum do kolejnych elementów ?
