@@ -16,23 +16,6 @@ from torch.nn.functional import normalize
 from torchvision import datasets, transforms
 
 
-class LossLoggingCallback(pl.Callback):
-
-    def __init__(self):
-        self.train_epoch_losses = []
-
-    def on_train_epoch_end(self, trainer, pl_module):
-
-        # Log the mean loss for the epoch (training step outputs are actually the losses)
-        epoch_mean_loss = torch.stack(pl_module.training_step_outputs).mean()
-        pl_module.log("training_epoch_mean", epoch_mean_loss)
-        pl_module.training_step_outputs.clear()
-
-        # This is weird, but needed to keep mlflow 'logging' outside of pytorch-lightning
-        # because, mlflow is used in 'wider' context (also logging visualizations, etc.)
-        self.train_epoch_losses.append(epoch_mean_loss.item())
-
-
 def prepare_mnist_images(selected_classes, save_dir):
     transform = transforms.Compose([transforms.ToTensor()])
 
