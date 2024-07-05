@@ -92,6 +92,24 @@ def generate_embeddings_and_fnames_simclr(
     embeddings = normalize(embeddings.to("cpu"))
     return embeddings, filenames
 
+def visualize_sequences(original_sequence, augmented_sequence, seq_len: int = 5) -> None:
+    fig, axs = plt.subplots(2, seq_len, figsize=(15, 3))
+    
+    for i in range(seq_len):
+        axs[0, i].imshow(original_sequence[i].squeeze(), cmap='gray')
+        axs[0, i].axis('off')
+        
+        axs[1, i].imshow(augmented_sequence[i].squeeze(), cmap='gray')
+        axs[1, i].axis('off')
+    
+    axs[0, 0].set_title('Original Sequence')
+    axs[1, 0].set_title('Augmented Sequence')
+    plt.show()
+
+def create_image_sequence(dataset, seq_len: int=5):
+    indices = torch.randint(0, len(dataset), (seq_len,))
+    images = torch.stack([dataset[i][0] for i in indices])
+    return images
 
 def get_image_as_np_array(filename: str) -> np.ndarray:
     """Returns an image as an numpy array"""
