@@ -25,6 +25,7 @@
     - https://arxiv.org/abs/2304.14601
     - https://arxiv.org/abs/2211.04888
     - https://arxiv.org/abs/2206.15015
+    - https://arxiv.org/pdf/2012.03457
 
 ## Hiperparametry
 - embedding_space_size [default(128), 32, 16, 8]
