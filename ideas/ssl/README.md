@@ -6,6 +6,9 @@
     - `mlflow ui`
 
 # TODO
+- [ ] czytanie
+    - [ ] NXTLoss 
+    - [ ] 'perfectly balanced'
 - [ ] sprawdzić mniejsze embeddingi
     - [ ] jak się zachowuje loss w zależności od embedding size?
     - [x] re-run wszystkich eksperymentów z zapisem loss
