@@ -6,20 +6,20 @@
     - `mlflow ui`
 
 # TODO
-- [ ] czytanie
-    - [ ] Understanding Contrastive Representation Learning through Alignment and Uniformity
+- [x] logować też loss i więcej metryk do mlflow
+    - [x] loss
+    - co jeszcze? (based on: [geeksforgeeks](https://www.geeksforgeeks.org/clustering-performance-evaluation-in-scikit-learn/))
+        - [x] ARI  (??)
+        - [x] Davies-Bouldin index (??)
+        - [x] Silhouette score (??)
+- [x] czytanie
+    - [x] Understanding Contrastive Representation Learning through Alignment and Uniformity
     - [x] intriguig properties of contrastive loss
     - [x] 'perfectly balanced'
     - [x] NXTLoss (kinda)
-- [ ] sprawdzić mniejsze embeddingi
-    - [ ] jak się zachowuje loss w zależności od embedding size?
+- [x] sprawdzić mniejsze embeddingi
+    - [x] jak się zachowuje loss w zależności od embedding size?
     - [x] re-run wszystkich eksperymentów z zapisem loss
-- [ ] logować też loss i więcej metryk do mlflow
-    - [x] loss
-    - co jeszcze? (based on: [geeksforgeeks](https://www.geeksforgeeks.org/clustering-performance-evaluation-in-scikit-learn/))
-        - [ ] ARI  (??)
-        - [ ] Davies-Bouldin index (??)
-        - [ ] Silhouette score (??)
 - [x] Jakie są rozsądne wartości lossa dla tego zadania? (wprost w papierze nie jest podane, ocena tylko na downstream tasks, trzeba porównać 'wewnątrz' eksperymentu, np. pomiędzy różnymi wymiarowościami latent space)
 - [x] założyć dokument google, który będzie pełnił funkcję "dziennika" z eksperymentów, takie podkreślenie key point'ów z eksperymentów
 - [x] poprawić literówkę w nazwie notebooka (jak się skończy run)
