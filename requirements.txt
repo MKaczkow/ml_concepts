@@ -26,3 +26,5 @@ mlflow
 vidaug
 scikit-image
 opencv-python
+torchrl
+tensordict
