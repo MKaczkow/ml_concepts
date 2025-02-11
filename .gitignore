@@ -6,6 +6,9 @@ __pycache__/
 # Drafts
 **/DRAFT.ipynb
 
+# Images
+tasks/style_transfer/generated_*.png
+
 # Datasets
 **/data
 **/MNIST

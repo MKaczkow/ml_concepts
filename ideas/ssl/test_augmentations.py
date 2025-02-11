@@ -1,7 +1,7 @@
 import unittest
 
 import torch
-from augmentations import augment_image_sequence
+from .augmentations import augment_image_sequence
 
 
 class TestAugmentImageSequence(unittest.TestCase):
