@@ -21,7 +21,7 @@ vega_datasets
 seaborn
 geopandas
 shapely
-apache-airflow
+# apache-airflow
 lightly
 shap
 mlflow
