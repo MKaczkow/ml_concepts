@@ -30,3 +30,4 @@ scikit-image
 opencv-python
 torchrl
 tensordict
+wandb

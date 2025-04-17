@@ -41,3 +41,5 @@ Repo for learning tools and ideas of ML/AI
 * [pytorch lightning](./tools/pytorch_lightning)
 * [rasa framework](./tools/rasa_framework)
 * [word2vec embeddings](./tools/word2vec_embeddings/)
+* [wandb experiments tracking](./tools/wandb_experiments_tracking/)
+* [hydra config management](./tools/hydra_config_management/)

@@ -19,6 +19,11 @@ tasks/style_transfer/generated_*.png
 # mlflow
 **/mlruns
 
+# wandb
+**/wandb
+tools/wandb_experiments_tracking/test-project/*
+tools/wandb_experiments_tracking/test-project
+
 # output data
 **/outputs/*.png
 **/outputs
