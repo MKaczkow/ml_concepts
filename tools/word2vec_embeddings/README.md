@@ -39,7 +39,6 @@
 ## References
 * [medium post](https://medium.com/@manansuri/a-dummys-guide-to-word2vec-456444f3c673)
 * [wikipedia](https://en.m.wikipedia.org/wiki/Word2vec)
-* [some blog in PL](https://clarin-pl.eu/index.php/word2vec/)
 * [cooler blog in PL](https://edrone.me/pl/blog/word2vec-w-pigulce)
 * [cool notebook (partially) about word2vec](https://github.com/KNSI-Golem/BootcampGeneral/blob/main/2021/meetings/meeting_10_NLP/notebook.ipynb)
 * [blogpost in EN](https://serokell.io/blog/word2vec)

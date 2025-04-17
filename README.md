@@ -13,7 +13,7 @@ Repo for learning tools and ideas of ML/AI
 * [metric_learning](./ideas/metric_learning)
 * [seq2seq](./ideas/seq2seq)
 * [ssl](./ideas/ssl)
-* [transformers](./ideas/transformers_from_scratch)
+* [transformers](./ideas/transformer_from_scratch)
 * [vae](./ideas/vae)
 * [xai](./ideas/xai)
 * [xbgoost](./ideas/xgboost)

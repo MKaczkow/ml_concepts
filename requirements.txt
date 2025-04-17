@@ -31,3 +31,4 @@ opencv-python
 torchrl
 tensordict
 wandb
+md-dead-link-check
