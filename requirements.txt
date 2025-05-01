@@ -32,3 +32,4 @@ torchrl
 tensordict
 wandb
 md-dead-link-check
+torch-tb-profiler
