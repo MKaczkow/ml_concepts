@@ -44,3 +44,4 @@ Repo for learning tools and ideas of ML/AI
 * [wandb experiments tracking](./tools/wandb_experiments_tracking/)
 * [hydra config management](./tools/hydra_config_management/)
 * [pytorch profiler](./tools/pytorch_profiler/)
+* [kernels](./theory/kernels/)
