@@ -5,5 +5,5 @@
 * many use-cases, like PCA, signal processing, etc.
 
 ## References
-* [some write up](https://zief0002.github.io/matrix-algebra/spectral-decompostion.html)
+* [some write up](https://zief0002.github.io/matrix-algebra/matrix-algebra/45-spectral-decomposition.html)
 * [stackexchange](https://math.stackexchange.com/questions/2568305/find-the-spectral-decomposition-of-a)
