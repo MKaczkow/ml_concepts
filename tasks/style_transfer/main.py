@@ -1,10 +1,9 @@
 import torch
 import torch.optim as optim
+from model import VGG
 from torchvision.transforms import Compose, Resize, ToTensor
 from torchvision.utils import save_image
-
 from utils import load_image
-from model import VGG
 
 
 def main():

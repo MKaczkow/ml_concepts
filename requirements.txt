@@ -33,3 +33,5 @@ tensordict
 wandb
 md-dead-link-check
 torch-tb-profiler
+mcp
+mcp[cli]

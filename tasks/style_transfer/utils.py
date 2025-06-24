@@ -1,5 +1,5 @@
-from PIL import Image
 import torchvision
+from PIL import Image
 
 
 def load_image(

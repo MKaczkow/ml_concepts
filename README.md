@@ -45,3 +45,4 @@ Repo for learning tools and ideas of ML/AI
 * [hydra config management](./tools/hydra_config_management/)
 * [pytorch profiler](./tools/pytorch_profiler/)
 * [kernels](./theory/kernels/)
+* [model context protocol](./tools/model_context_protocol/)
