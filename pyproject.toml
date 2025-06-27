@@ -1,0 +1,17 @@
+[project]
+name = "ml-concepts"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "guidance>=0.2.3",
+    "ipykernel>=6.29.5",
+    "llama-cpp-python>=0.3.9",
+    "torch>=2.7.1",
+]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+]

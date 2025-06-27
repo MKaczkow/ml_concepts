@@ -34,6 +34,8 @@ tools/wandb_experiments_tracking/test-project
 # models
 **/*.pth
 **/*.pt
+ideas/grammar_constrained_decoding/llama-b5760-bin-win-cuda-12.4-x64
+ideas/grammar_constrained_decoding/llama-2-7b-chat.Q2_K.gguf
 
 # gradio 
 ./tools/gradio_demos/flagged/*.csv

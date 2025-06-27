@@ -46,3 +46,4 @@ Repo for learning tools and ideas of ML/AI
 * [pytorch profiler](./tools/pytorch_profiler/)
 * [kernels](./theory/kernels/)
 * [model context protocol](./tools/model_context_protocol/)
+* [grammar constrained decoding](./ideas/grammar_constrained_decoding/)

@@ -1,10 +1,10 @@
 # Contrastive Learning
 
 # TODO
-- [ ] what's up with kernels in contrastive learning?
+- [x] what's up with kernels in contrastive learning?
 
 ## General
-* kernels in contrastive learning are used to measure similarity between data points
+* kernels in contrastive learning are used to measure similarity between data points (see: [kernels](../../theory/kernels/README.md))
 
 ## References
 * [reasonably good overview blogpost](https://www.v7labs.com/blog/contrastive-learning-guide)

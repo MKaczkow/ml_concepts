@@ -35,3 +35,4 @@ md-dead-link-check
 torch-tb-profiler
 mcp
 mcp[cli]
+guidance[all]

@@ -1,7 +1,7 @@
 # Kernels
 
 # TODO
-- [ ] tf is kernel perceptron?
+- [x] tf is kernel perceptron?
 
 ## General
 * you can just add a new dimension if data is not linearly separable in current dimensions
