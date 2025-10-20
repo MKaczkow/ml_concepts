@@ -47,3 +47,4 @@ Repo for learning tools and ideas of ML/AI
 * [kernels](./theory/kernels/)
 * [model context protocol](./tools/model_context_protocol/)
 * [grammar constrained decoding](./ideas/grammar_constrained_decoding/)
+* [byte-pair endcoding tokenier](./theory/bpe_tokenizer/)
