@@ -13,6 +13,8 @@ Repo for learning tools and ideas of ML/AI
   - [ ] rework chapter 03
   - [ ] chapter 04
   - [ ] chapter 05
+  - [ ] chapter 06
+  - [ ] chapter 07
 
 ---
 

@@ -1,6 +1,9 @@
 # traces 
 tools/pytorch_profiler/trace.json
 
+# data files
+ideas/gpt_from_scratch/instruction-data.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
